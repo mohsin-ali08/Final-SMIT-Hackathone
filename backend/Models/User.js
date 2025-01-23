@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: true,
     },
     email: {
         type: String,
@@ -18,7 +17,7 @@ const UserSchema = new Schema({
     role: {
         type: String,
         enum: ['user', 'admin'],
-        default: 'admin' // Default role is 'user', can be set to 'admin' during signup or when updating a user
+        default: 'user' // Default role is 'user', can be set to 'admin' during signup or when updating a user
     }
 });
 
