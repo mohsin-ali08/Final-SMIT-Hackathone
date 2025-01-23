@@ -8,27 +8,27 @@ function Navbar({ handleLogout }) {
     const navigate = useNavigate();
 
     return (
-        <nav className="bg-blue-600 p-4 flex justify-between items-center">
+        <nav className="bg-gray-700 px-5 py-3 flex justify-between items-center">
             {/* Logo/Brand */}
-            <div className="text-white text-lg font-bold">
-                <Link to="/">Home</Link>
+            <div className="text-white text-md font-bold">
+                <Link to="/">MOHSIN</Link>
             </div>
 
             {/* Navigation Links */}
             <div className="flex items-center space-x-6">
-                <Link to="/Profile" className="text-white hover:text-gray-200 text-lg">
+                <Link to="/Profile" className="text-white hover:text-gray-200 text-md">
                     Profile
                 </Link>
-                <Link to="/Admin" className="text-white hover:text-gray-200 text-lg">
+                <Link to="/Admin" className="text-white hover:text-gray-200 text-md">
                     Admin
                 </Link>
 
                 {/* Logout Button using Ant Design */}
                 <Button
                     onClick={handleLogout}
-                    type="primary"
+                    type="none"
                     danger
-                    className="rounded-md"
+                    className="rounded-md bg-red-600 hover:bg-red-500 text-white hover:text-white"
                 >
                     Logout
                 </Button>
