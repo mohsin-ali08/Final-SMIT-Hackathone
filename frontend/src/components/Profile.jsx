@@ -1,61 +1,73 @@
-// BlogForm.js
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Spin } from 'antd';
 import { handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
 
 function BlogForm() {
     const [loggedInUser, setLoggedInUser] = useState('');
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false); // Loading state for button
     const navigate = useNavigate();
 
-
     useEffect(() => {
-        setLoggedInUser(localStorage.getItem('loggedInUser'));
+        const user = localStorage.getItem('loggedInUser');
+        setLoggedInUser(user);
+        console.log('Logged in user:', user); // Check if logged-in user is available in localStorage
     }, []);
 
-
     const handleBlogSubmit = async (values) => {
+        setLoading(true); // Set loading to true when form is submitted
         try {
-            const url = `${process.env.REACT_APP_API_URL}/blogs`;
+            if (!loggedInUser) {
+                // Handle the case when the user is not logged in
+                handleError('User is not logged in.');
+                return;
+            }
+
+            const url = "http://localhost:8080/api/blogs";
             const headers = {
                 'Content-Type': 'application/json',
                 Authorization: localStorage.getItem('token'),
             };
+
+            // Add the logged-in user's username to the values as the author
+            const blogData = {
+                ...values,
+                author: loggedInUser, // Ensure that the author is set
+            };
+
             const response = await fetch(url, {
                 method: 'POST',
                 headers,
-                body: JSON.stringify(values),
+                body: JSON.stringify(blogData),
             });
+
             const result = await response.json();
+            setLoading(false); // Set loading to false once the response is received
 
             if (result.success) {
                 handleSuccess('Blog created successfully!');
                 form.resetFields();
-                navigate('/blogs');
+                navigate('/home');
             } else {
                 handleError(result.message || 'Failed to create blog.');
             }
         } catch (err) {
+            setLoading(false); // Set loading to false if an error occurs
             handleError('An error occurred while creating the blog.');
         }
     };
-
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-lg p-8 bg-white rounded-lg shadow">
                 <h1 className="text-2xl font-bold text-center mb-6">Create a Blog</h1>
-                <div className="p-8">
-            <h1 className="text-2xl font-semibold mt-8">Welcome {loggedInUser}</h1>
-            {/* You can add more profile-related content here */}
-        </div>
-                <Form
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleBlogSubmit}
-                >
+                <div className="text-center mb-4">
+                    <h2 className="text-xl font-semibold">Welcome, {loggedInUser}</h2>
+                    <p className="text-gray-500">Write a new blog post below</p>
+                </div>
+                <Form form={form} layout="vertical" onFinish={handleBlogSubmit}>
                     <Form.Item
                         label="Blog Title"
                         name="title"
@@ -75,8 +87,9 @@ function BlogForm() {
                             type="primary"
                             htmlType="submit"
                             className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                            disabled={loading} // Disable button when loading
                         >
-                            Submit
+                            {loading ? <Spin size="small" /> : 'Submit'} {/* Show loading spinner when submitting */}
                         </Button>
                     </Form.Item>
                 </Form>
@@ -87,11 +100,3 @@ function BlogForm() {
 }
 
 export default BlogForm;
-
-
-
-
-
-
-
-
