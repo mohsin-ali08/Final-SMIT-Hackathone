@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "proxy": "https://final-smit-one.vercel.app",
     "start": "nodemon index.js",
     "dev": "nodemon index.js"
   },

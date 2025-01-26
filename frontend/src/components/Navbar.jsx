@@ -1,11 +1,24 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-const Navbar = ({ isAuthenticated }) => {
+const Navbar = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check authentication status when the component mounts
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Retrieve token from local storage
+    if (token) {
+      setIsAuthenticated(true); // If token exists, user is authenticated
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
 
   const handleLogout = () => {
-    // Perform logout logic
-    navigate('/login');
+    localStorage.removeItem('token'); // Remove token from local storage
+    setIsAuthenticated(false); // Update state
+    navigate('/login'); // Redirect to login page
   };
 
   return (
