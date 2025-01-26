@@ -22,10 +22,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
+    <nav className="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
       <div>
         <Link to="/" className="text-xl font-bold">
-          My App
+          SAYLANI Microfinance Bank
         </Link>
       </div>
       <div className="flex space-x-4">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LoanCategories from "./ui/LoanCategory";
 import { Button, Form, Input, Modal } from "antd";
+import backgroundImage from '../img/Background.jpg';
 
 const Hero = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -9,8 +10,9 @@ const Hero = () => {
     <section
       className="text-gray-600 body-font min-h-screen bg-cover bg-center"
       style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')",
+        backgroundImage: `url(${backgroundImage})`, // Use the imported image here
+        backgroundPosition: 'center', // Ensure the background is centered
+        backgroundSize: 'cover', // Ensure it covers the entire section
       }}
     >
       <div className="bg-gray-900 bg-opacity-60 min-h-screen">
@@ -37,7 +39,7 @@ const Hero = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
             {["Wedding Loans", "Startup Loans", "Educational Loans", "Emergency Loans"].map(
               (category, index) => (
                 <div
