@@ -1,35 +1,37 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Login from './pages/Login';
-import Admin from "./components/Admin/Admin.jsx"
-import PrivateRoute from './components/Admin/PrivateRoute.jsx';
-import Signup from './pages/Signup';
-import Home from './pages/Home';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import RefrshHandler from './RefrshHandler';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Admin from './components/Admin/Admin';
 import Profile from './components/Profile';
+import './App.css';
+import LoanCalculator from './components/LoanCalculator';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const PrivateRoute = ({ element }) => {
-    return isAuthenticated ? element : <Navigate to="/login" />
-  }
-
   return (
     <div className="App">
-      <RefrshHandler setIsAuthenticated={setIsAuthenticated} />
+      <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
-
-        <Route path='/' element={<Home />} />
-        {/* <Route path='/login' element={<Navigate to="/login" />} /> */}
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/home' element={<PrivateRoute element={<Home />} />} />
-        <Route path='/profile' element={<Profile />} />
-        {/* Protect admin route with PrivateRoute */}
-      <Route path='/AdminDashboard' element={<PrivateRoute element={<Admin />} />} />
-
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path='/loan-calculator' element={<LoanCalculator />} />
+        <Route
+          path="/profile"
+          element={
+            isAuthenticated ? <Profile /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/AdminDashboard"
+          element={
+            isAuthenticated ? <Admin /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </div>
   );
